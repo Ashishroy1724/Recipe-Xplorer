@@ -1,0 +1,13 @@
+.icon {
+  transition: transform 0.3s ease;
+}
+
+.icon:hover {
+  transform: scale(1.2);
+}
+
+.ingredients-container {
+  max-height: 380px; /* Adjust as needed */
+  overflow-y: auto;
+}
+
