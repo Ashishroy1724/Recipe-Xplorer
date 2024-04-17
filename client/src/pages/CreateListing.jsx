@@ -235,64 +235,7 @@ export default function CreateListing() {
             </div>
           </div>
           <div className="flex flex-wrap gap-6">
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                id="bedrooms"
-                max="10"
-                min="1"
-                required
-                className="p-3 border-gray-300 rounded-lg"
-                onChange={handleChange}
-                value={formData.bedrooms}
-              />
-              <p>Beds</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                id="bathrooms"
-                max="10"
-                min="1"
-                required
-                className="p-3 border-gray-300 rounded-lg"
-                onChange={handleChange}
-                value={formData.bathrooms}
-              />
-              <p>Bathrooms</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                id="regularPrice"
-                max="10"
-                min="1"
-                required
-                className="p-3 border-gray-300 rounded-lg"
-                onChange={handleChange}
-                value={formData.regularPrice}
-              />
-              <div className="flex flex-col items-center">
-                <p>Regular Price</p>
-                <span className="text-xs">($ / month)</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                id="discountPrice"
-                max="10"
-                min="1"
-                required
-                className="p-3 border-gray-300 rounded-lg"
-                onChange={handleChange}
-                value={formData.discountPrice}
-              />
-              <div className="flex flex-col items-center">
-                <p>Discounted Price</p>
-                <span className="text-xs">($ / month)</span>
-              </div>
-            </div>
+            
           </div>
         </div>
         <div className="flex flex-col flex-1 gap-4">

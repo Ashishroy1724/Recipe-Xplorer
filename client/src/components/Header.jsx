@@ -25,13 +25,13 @@ export default function Header() {
     }
   }, []);
   return (
-    <header className='bg-gradient-to-r from-teal-500 via-blue-500 to-indigo-500 shadow-md'>
+    <header className='bg-teal-600 sticky top-0 z-50'>
       <div className='flex justify-between items-center max-w-6xl mx-auto p-3'> 
         {/* Logo */}
         <Link to='/' className='text-white'>
           <h1 className='font-bold text-sm sm:text-xl flex flex-wrap gap-1'>
             <span>RECIPE</span>
-            <span className='text-blue-800'>XPLORER</span>
+            <span className='text-yellow-300'>XPLORER</span>
           </h1>
         </Link>
 
@@ -45,7 +45,7 @@ export default function Header() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <button>
-          <FaSearch className='text-blue-800 ml-2' />
+          <FaSearch className='text-yellow-700 ml-2' />
           </button>
         </form>
 

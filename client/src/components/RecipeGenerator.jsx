@@ -1,16 +1,26 @@
-import { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
+import React, { useState, useEffect } from 'react';
 
 function RecipeGenerator() {
   const [recipe, setRecipe] = useState('');
   const [ingredients, setIngredients] = useState('');
   const [cuisine, setCuisine] = useState('');
+  const [substitution, setSubstitution] = useState('');
   const [allergies, setAllergies] = useState('');
   const [speech, setSpeech] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [recognition, setRecognition] = useState(null);
+
+  useEffect(() => {
+    return () => {
+      stopSpeech(); // Clean up speech synthesis when component unmounts
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const generateRecipe = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/recipe?ingredients=${encodeURIComponent(ingredients)}&cuisine=${encodeURIComponent(cuisine)}&allergies=${encodeURIComponent(allergies)}`);
+      const response = await fetch(`http://localhost:8000/recipe?ingredients=${encodeURIComponent(ingredients)}&cuisine=${encodeURIComponent(cuisine)}&substitution=${encodeURIComponent(substitution)}&allergies=${encodeURIComponent(allergies)}`);
       const data = await response.json();
       const recipe = data.recipe;
       setRecipe(recipe);
@@ -19,6 +29,7 @@ function RecipeGenerator() {
       setRecipe('Failed to generate recipe');
     }
 
+    // eslint-disable-next-line no-undef
     stopVoiceRecognition();
   };
 
@@ -26,22 +37,26 @@ function RecipeGenerator() {
     setRecipe('');
     setIngredients('');
     setCuisine('');
+    setSubstitution('');
     setAllergies('');
     stopSpeech();
+    // eslint-disable-next-line no-undef
     stopVoiceRecognition();
   };
 
   const generateAnotherRecipe = () => {
     setRecipe('');
     generateRecipe();
+    // eslint-disable-next-line no-undef
     stopVoiceRecognition();
   };
 
   const speakRecipe = () => {
-    const speech = new SpeechSynthesisUtterance(recipe);
-    window.speechSynthesis.speak(speech);
-    stopVoiceRecognition();
-    setSpeech(speech);
+    stopSpeech(); // Stop speech before starting new reading
+
+    const newSpeech = new SpeechSynthesisUtterance(recipe);
+    window.speechSynthesis.speak(newSpeech);
+    setSpeech(newSpeech);
   };
 
   const pauseSpeech = () => {
@@ -51,19 +66,22 @@ function RecipeGenerator() {
   };
 
   const playSpeech = () => {
-    if (speech) {
+    if (speech && speech.paused) {
       window.speechSynthesis.resume();
+    } else {
+      speakRecipe(); // If speech is not paused, start from the beginning
     }
   };
 
   const stopSpeech = () => {
     if (speech) {
       window.speechSynthesis.cancel();
+      setSpeech(null); // Reset speech object
     }
   };
 
   const startVoiceRecognition = () => {
-    const recognition = new webkitSpeechRecognition();
+    const recognition = new window.webkitSpeechRecognition();
     recognition.onresult = (event) => {
       const command = event.results[0][0].transcript.toLowerCase();
 
@@ -128,21 +146,25 @@ function RecipeGenerator() {
           <input type="text" id="cuisine" placeholder="e.g., Indian, Italian, American" value={cuisine} onChange={(e) => setCuisine(e.target.value)} className="border border-gray-300 px-3 py-2 rounded-md w-full" />
         </div>
         <div className="mb-4">
+          <label htmlFor="substitution" className="block">Substitution:</label>
+          <input type="text" id="substitution" placeholder="Ingredients you want to substitute" value={substitution} onChange={(e) => setSubstitution(e.target.value)} className="border border-gray-300 px-3 py-2 rounded-md w-full" />
+        </div>
+        <div className="mb-4">
           <label htmlFor="allergies" className="block">Allergies:</label>
           <input type="text" id="allergies" placeholder="e.g., milk, eggs, fish" value={allergies} onChange={(e) => setAllergies(e.target.value)} className="border border-gray-300 px-3 py-2 rounded-md w-full" />
         </div>
-        <button onClick={generateRecipe} className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 w-full md:w-auto">Generate Recipe</button>
-        <button onClick={clearRecipe} className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md md:mr-2 mt-2 md:mt-0 w-full md:w-auto">Clear</button>
-        <button onClick={startVoiceRecognition} className="bg-green-500 text-white px-4 py-2 rounded-md mt-4 w-full md:w-auto">Start Voice Recognition</button>
+        <button onClick={generateRecipe} className="bg-yellow-300 text-black px-4 py-2 rounded-md mr-2 w-full md:w-auto hover:bg-yellow-400">Generate Recipe</button>
+        <button onClick={clearRecipe} className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md md:mr-2 mt-2 md:mt-0 w-full md:w-auto hover:bg-gray-400">Clear</button>
+        {/* <button onClick={startVoiceRecognition} className="bg-green-500 text-white px-4 py-2 rounded-md mt-4 w-full md:w-auto">Start Voice Recognition</button> */}
       </div>
       <div className="border p-7 shadow output-box md:w-2/3">
         <div className="output-header mb-4">
           <h2 className="text-xl font-bold mb-2">Generated Recipe</h2>
-          <button onClick={generateAnotherRecipe} className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 mt-2 md:mt-0 w-full md:w-auto">Generate Another Recipe</button>
-          <button onClick={speakRecipe} className="bg-green-500 text-white px-4 py-2 rounded-md mr-2 mt-2 md:mt-0 w-full md:w-auto">Read Recipe</button>
-          <button onClick={pauseSpeech} className="bg-green-500 text-white px-4 py-2 rounded-md mr-2 mt-2 md:mt-0 w-full md:w-auto">Pause</button>
-          <button onClick={playSpeech} className="bg-green-500 text-white px-4 py-2 rounded-md mr-2 mt-2 md:mt-0 w-full md:w-auto">Play</button>
-          <button onClick={stopSpeech} className="bg-red-500 text-white px-4 py-2 rounded-md mt-2 md:mt-0 w-full md:w-auto">Stop</button>
+          <button onClick={generateAnotherRecipe} className="bg-yellow-300 text-black px-4 py-2 rounded-md mr-2 mt-2 md:mt-0 w-full md:w-auto hover:bg-yellow-400">Generate Another Recipe</button>
+          <button onClick={speakRecipe} className="bg-green-500 text-white px-4 py-2 rounded-md mr-2 mt-2 md:mt-0 w-full md:w-auto hover:bg-green-600">Read Recipe</button>
+          <button onClick={pauseSpeech} className="bg-green-500 text-white px-4 py-2 rounded-md mr-2 mt-2 md:mt-0 w-full md:w-auto hover:bg-green-600">Pause</button>
+          <button onClick={playSpeech} className="bg-green-500 text-white px-4 py-2 rounded-md mr-2 mt-2 md:mt-0 w-full md:w-auto hover:bg-green-600">Play</button>
+          <button onClick={stopSpeech} className="bg-red-500 text-white px-4 py-2 rounded-md mt-2 md:mt-0 w-full md:w-auto hover:bg-red-600">Stop</button>
         </div>
         {parseRecipeSections()}
       </div>

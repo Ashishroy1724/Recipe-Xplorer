@@ -1,0 +1,72 @@
+/* CSS keyframes for typewriter effect typing from right to left */
+@keyframes typewriter {
+    from {
+      width: 100%;
+    }
+    to {
+      width: 0;
+    }
+  }
+  
+  @keyframes typewriter-cursor {
+    from {
+      border-right-color: black;
+    }
+    to {
+      border-right-color: transparent;
+    }
+  }
+  
+  /* Apply the typewriter animation to the span */
+  .typewriter-text {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 3px solid black; /* Cursor effect */
+    animation: typewriter 2s steps(25, end),
+               typewriter-cursor 0.8s steps(1) infinite;
+    animation-direction: reverse; /* Reverse the animation direction */
+    text-align: right; /* Align text to the right */
+  }
+
+
+  /* CSS keyframes for fade-in effect */
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Start with element being transparent */
+    }
+    to {
+        opacity: 1; /* Element becomes fully visible */
+    }
+}
+
+/* Apply the fade-in animation to the heading and paragraph */
+.fade-in {
+    animation: fadeIn 5s ease-in-out; /* Adjust duration and easing as desired */
+}
+
+.bg{
+    min-height: 90vh;
+    border-bottom-left-radius: 10px; /* Rounds bottom-left corner */
+    border-bottom-right-radius: 10px; /* Rounds bottom-right corner */
+    width: 97%;
+    margin: 0 auto;
+    background-image:linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(img/bookbg.jpg);
+    background-position: center;
+    background-size: cover;
+    position: relative;
+}
+
+.about{
+    min-height: 50vh;
+   border-radius: 10px;
+    width: 50%;
+    margin: 10px;
+    margin-bottom: 50px;
+    background-image:url(img/about.jpg);
+    background-position: right;
+    background-size: cover;
+    /* position: relative; */
+}
+
+

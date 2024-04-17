@@ -46,7 +46,7 @@ export default function Listing() {
                 <>
                     <h1 className="text-center text-3xl font-semibold my-7 mx-5 text-blue-700">{listing.name}</h1>
                     <div className="flex flex-col md:flex-row">
-                        <div className="w-full md:w-1/2 px-5">
+                        <div className="w-full md:w-2/5 px-5">
                         <Swiper navigation
                             speed={500} // Adjust the speed (in milliseconds) for smoother transition
                             slidesPerView={1}
@@ -59,7 +59,7 @@ export default function Listing() {
                         ))}
                         </Swiper>
                         </div>
-                        <div className="w-full md:w-1/2 px-5 mt-5 items-center">
+                        <div className="w-full md:w-2/3 px-5 mt-5 items-center">
                             {listing.ingredients && (
                                 <div className="overflow-y-auto bg-white rounded-lg p-4 shadow-md ">
                                     <h2 className="text-2xl my-7 font-semibold text-green-700  top-0 ">Ingredients:</h2>
